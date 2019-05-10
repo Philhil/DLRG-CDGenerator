@@ -56,29 +56,20 @@
 
             <form method="POST" action="{{ action('GenerateController@store') }}">
                 @csrf
-                <div class="form-group">
-                    <label for="text1">Text1</label>
-                    <input id="text1" name="text1" class="form-control @error('text1') is-invalid @enderror" type="text" placeholder="Default input">
-                    @error('text1')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
-                </div>
 
-                <div class="form-group">
-                    <label for="text2">Text2</label>
-                    <input id="text2" name="text2" class="form-control @error('text2') is-invalid @enderror" type="text" placeholder="Default input">
-                    @error('text2')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
-                </div>
+                {{ Form::hidden('format', $format->id) }}
 
-                <div class="form-group">
-                    <label for="text3">Text3</label>
-                    <input id="text3" name="text3" class="form-control @error('text3') is-invalid @enderror" type="text" placeholder="Default input">
-                    @error('text3')
-                    <div class="alert alert-danger">{{ $message }}</div>
-                    @enderror
-                </div>
+                @foreach( $fields as $fieldid => $fieldprops)
+                    <div class="form-row">
+                        <label for="{{$fieldid}}">{{$fieldprops->label}}</label>
+                        <input id="{{$fieldid}}" name="{{$fieldid}}" class="form-control @error('{{$fieldid}}') is-invalid @enderror" type="{{$fieldprops->type}}" placeholder="Default input">
+                        @error('{{$fieldid}}')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                @endforeach
+
+                <br />
 
                 <div class="form-row align-items-center">
                     <div class="col-auto">

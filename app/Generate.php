@@ -17,7 +17,7 @@ class Generate extends Model
 
     public function users()
     {
-        return $this->belongsToMany('App\User', 'gliederung_user');
+        return $this->belongsToMany('App\User', 'generate_user');
     }
 
     public function gliederung()

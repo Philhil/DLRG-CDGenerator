@@ -29,7 +29,7 @@ class CreateGeneratesTable extends Migration
             $table->unsignedBigInteger('format_id');
             $table->foreign('format_id')->references('id')->on('formats');
 
-            $table->unsignedBigInteger('gliederung_id');
+            $table->unsignedBigInteger('gliederung_id')->nullable();
             $table->foreign('gliederung_id')->references('id')->on('gliederungs');
 
             $table->timestamps();

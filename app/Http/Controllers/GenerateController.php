@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Format;
+use App\Generate;
+use App\GenerateUser;
 use App\Jobs\ProcessGenerateTemplate;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class GenerateController extends Controller
 {
@@ -26,16 +30,17 @@ class GenerateController extends Controller
      */
     public function create(Request $request)
     {
-        //if set format? -> show generate
-        //not set -> select format
+        $format = Format::where('id', Input::get('format'))->first();
 
-        if ($request->has('format'))
+        if ($request->has('format') && $format != null)
         {
-            return view('generate.create');
+            $fields = json_decode($format->fields);
+            return view('generate.create', compact(['format', 'fields']));
         }
 
-        $format = Format::where('id', '==', $request->get('format'))->first();
-        return view('generate.selectFormat', compact('format'));
+
+        $formats = Format::select(['id', 'name', 'format', 'description'])->orderby('name', 'asc')->get();
+        return view('generate.selectFormat', compact('formats'));
     }
 
     /**
@@ -46,9 +51,46 @@ class GenerateController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->except(['id', '_token']));
+        $format = Format::where('id', $request->get("format"))->first();
+        if ($format == null)
+        {
+            die("Nope.");
+        }
 
-        ProcessGenerateTemplate::dispatch(/*TODO*/);
+        $fields = json_decode($format->fields);
+
+        //get all field id's/names from Format and create array. Array to json
+        $inputs = Array();
+        foreach ($fields as $fieldid => $fieldprops)
+        {
+            if (!empty($request->get($fieldid)))
+            {
+                $inputs[$fieldid] = $request->get($fieldid);
+            }
+        }
+
+        $generate = new Generate();
+        $generate->content= json_encode($inputs);
+        $generate->format_id = $format->id;
+        $generate->save();
+
+        $user = User::where('email', $request->get('email'))->first();
+        if ($user == null)
+        {
+            $user = new User();
+            $user->name = $request->get('name');
+            $user->email = $request->get('email');
+            $user->save();
+        }
+
+        $generate_user = new GenerateUser();
+        $generate_user->user_id = $user->id;
+        $generate_user->generate_id = $generate->id;
+        $generate_user->save();
+
+        ProcessGenerateTemplate::dispatch($generate)->onQueue('generate');
+
+        //TODO: show text and estimated waiting time...
     }
 
     /**

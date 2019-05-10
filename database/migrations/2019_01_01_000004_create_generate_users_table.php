@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGliederungUserTable extends Migration
+class CreateGenerateUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,10 @@ class CreateGliederungUserTable extends Migration
      */
     public function up()
     {
-        Schema::create('gliederung_user', function (Blueprint $table) {
+        Schema::create('generate_users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('gliederung_id');
-            $table->foreign('gliederung_id')->references('id')->on('gliederungs');
+            $table->unsignedBigInteger('generate_id');
+            $table->foreign('generate_id')->references('id')->on('generates');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

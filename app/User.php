@@ -40,6 +40,6 @@ class User extends Authenticatable
 
     public function generates()
     {
-        return $this->belongsToMany('App\Generate', 'gliederung_user');
+        return $this->belongsToMany('App\Generate', 'generate_user');
     }
 }

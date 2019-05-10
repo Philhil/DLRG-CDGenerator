@@ -87,18 +87,12 @@
                 </div>
 
                 <form method="GET" action="{{ action('GenerateController@create') }}">
-                    @csrf
+
                     <div class="form-group">
                         <select class="form-control @error('format') is-invalid @enderror" id="format" name="format">
-                            <option>A4</option>
-                            <option>A4 2 Spalten</option>
-                            <option>A4 3 Spalten</option>
-                            <option>A4 2 Spalten</option>
-                            <option>A4 3 Spalten</option>
-                            <option>A4 2 Spalten</option>
-                            <option>A4 3 Spalten</option><option>A4 2 Spalten</option>
-                            <option>A4 3 Spalten</option>
-
+                            @foreach($formats as $format)
+                                <option value="{{$format->id}}">{{$format->name}} @if(!empty($format->description))({{substr($format->description, 0, 40)}})@endif</option>
+                            @endforeach
                         </select>
 
                         @error('format')
