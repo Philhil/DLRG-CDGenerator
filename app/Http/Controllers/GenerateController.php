@@ -9,6 +9,7 @@ use App\Jobs\ProcessGenerateTemplate;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
 
 class GenerateController extends Controller
 {
@@ -56,6 +57,11 @@ class GenerateController extends Controller
         {
             die("Nope.");
         }
+
+        $request->validate([
+            'name' => 'required|max:255',
+            'email' => 'required|email',
+        ]);
 
         $fields = json_decode($format->fields);
 

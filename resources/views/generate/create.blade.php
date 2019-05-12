@@ -62,7 +62,7 @@
                 @foreach( $fields as $fieldid => $fieldprops)
                     <div class="form-row">
                         <label for="{{$fieldid}}">{{$fieldprops->label}}</label>
-                        <input id="{{$fieldid}}" name="{{$fieldid}}" class="form-control @error('{{$fieldid}}') is-invalid @enderror" type="{{$fieldprops->type}}" placeholder="Default input">
+                        <input id="{{$fieldid}}" name="{{$fieldid}}" class="form-control @error('{{$fieldid}}') is-invalid @enderror" type="{{$fieldprops->type}}" placeholder="Default input" value="{{old($fieldid)}}">
                         @error('{{$fieldid}}')
                         <div class="alert alert-danger">{{ $message }}</div>
                         @enderror
@@ -74,7 +74,7 @@
                 <div class="form-row align-items-center">
                     <div class="col-auto">
                         <label class="sr-only" for="name">Name</label>
-                        <input type="text" class="form-control mb-2 @error('name') is-invalid @enderror" id="name" name="name" placeholder="Name">
+                        <input type="text" class="form-control mb-2 @error('name') is-invalid @enderror" id="name" name="name" placeholder="Name" value="{{old('name')}}">
                         @error('Name')
                         <div class="alert alert-danger">{{ $message }}</div>
                         @enderror
@@ -85,7 +85,7 @@
                             <div class="input-group-prepend">
                                 <div class="input-group-text">@</div>
                             </div>
-                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" placeholder="emailadresse@dlrg.de">
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" placeholder="emailadresse@dlrg.de" value="{{old('email')}}">
                             @error('email')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
